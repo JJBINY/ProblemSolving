@@ -10,27 +10,42 @@ import static java.lang.Integer.parseInt;
 import static java.util.Objects.isNull;
 
 /**
- * P2 학교가지마!
- * https://www.acmicpc.net/problem/1420
+ * P2 Cops and Robbers
+ * https://www.acmicpc.net/problem/16407
  */
-public class P2_학교가지마 {
+public class P2_CopsAndRobbers {
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         //입력
         StringTokenizer st = new StringTokenizer(br.readLine());
-        int N = parseInt(st.nextToken());
-        int M = parseInt(st.nextToken());
+        int M = parseInt(st.nextToken()); //열
+        int N = parseInt(st.nextToken()); //행
+        int C = parseInt(st.nextToken());
 
-        Node.init(N * M, 2);
-
+        Node.init(N * M + 1, 2);
+        Node sink = Node.of(N * M, 0);
         String[] arr = new String[N];
         for (int i = 0; i < N; i++) {
             arr[i] = br.readLine();
+            //바깥 테두리(탈출지점)를 sink와 연결
+            Node.of(i * M, 1).addEdge(sink, MAX_VALUE);
+            Node.of(i * M + M-1, 1).addEdge(sink, MAX_VALUE);
+            if(i==0 || i==N-1){
+                for (int j = 1; j < M-1; j++) {
+                    Node.of(i * M + j, 1).addEdge(sink, MAX_VALUE);
+                }
+            }
+        }
+
+        st = new StringTokenizer(br.readLine());
+        Map<Character, Integer> costMap = new HashMap<>();
+        for (int i = 0; i < C; i++) {
+            //바리게이트 설치 비용 기록
+            costMap.put((char)('a' + i), parseInt(st.nextToken()));
         }
 
         Node source = null;
-        Node sink = null;
         int[] dr = new int[]{1, -1, 0, 0};
         int[] dc = new int[]{0, 0, 1, -1};
         for (int i = 0; i < N; i++) {
@@ -38,26 +53,24 @@ public class P2_학교가지마 {
                 char c = arr[i].charAt(j);
                 Node in = Node.of(i * M + j, 0);
                 Node out = Node.of(i * M + j, 1);
-                if (c == 'K') {
+                int cost = MAX_VALUE;
+                if (c == 'B') {
                     source = out;
-                } else if (c == 'H') {
-                    sink = in;
-                } else if (c == '#') {
-                    continue;
-                } else {
-                    in.addEdge(out, 1);
+                } else if (c != '.') {
+                    cost = costMap.get(c);
                 }
+                in.addEdge(out, cost);
 
                 for (int k = 0; k < 4; k++) {
                     int nr = i + dr[k];
                     int nc = j + dc[k];
                     if (nr < 0 || nr >= N || nc < 0 || nc >= M) continue;
-                    if (arr[nr].charAt(nc) == '#') continue;
-                    out.addEdge(Node.of(nr * M + nc, 0), 1);
+                    out.addEdge(Node.of(nr * M + nc, 0), MAX_VALUE);
                 }
             }
         }
 
+        //source와 sink가 붙어있는 경우 절대 막을 수 없다.
         for (Node.Edge edge : source.edges) {
             if (edge.next.equals(sink)) {
                 System.out.println(-1);
@@ -68,8 +81,8 @@ public class P2_학교가지마 {
         int totalFlow = 0;
         while (true) {
             //경로 탐색
-            Node[][] prev = new Node[N * M][2];
-            Node.Edge[][] path = new Node.Edge[N * M][2];
+            Node[][] prev = new Node[N * M+1][2];
+            Node.Edge[][] path = new Node.Edge[N * M+1][2];
             Queue<Node> queue = new LinkedList<>();
             queue.add(source);
             while (!queue.isEmpty()) {

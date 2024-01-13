@@ -1,4 +1,4 @@
-package 백준.그래프.최대유량.최소컷;
+package 못깬거;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,66 +10,51 @@ import static java.lang.Integer.parseInt;
 import static java.util.Objects.isNull;
 
 /**
- * P2 학교가지마!
- * https://www.acmicpc.net/problem/1420
+ * P1 The King of the North
+ * https://www.acmicpc.net/problem/9209
  */
-public class P2_학교가지마 {
+public class P1_TheKingOfTherNorth {
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         //입력
         StringTokenizer st = new StringTokenizer(br.readLine());
-        int N = parseInt(st.nextToken());
-        int M = parseInt(st.nextToken());
+        int R = parseInt(st.nextToken()); //행
+        int C = parseInt(st.nextToken()); //열
 
-        Node.init(N * M, 2);
-
-        String[] arr = new String[N];
-        for (int i = 0; i < N; i++) {
-            arr[i] = br.readLine();
-        }
-
-        Node source = null;
-        Node sink = null;
-        int[] dr = new int[]{1, -1, 0, 0};
-        int[] dc = new int[]{0, 0, 1, -1};
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < M; j++) {
-                char c = arr[i].charAt(j);
-                Node in = Node.of(i * M + j, 0);
-                Node out = Node.of(i * M + j, 1);
-                if (c == 'K') {
-                    source = out;
-                } else if (c == 'H') {
-                    sink = in;
-                } else if (c == '#') {
-                    continue;
-                } else {
-                    in.addEdge(out, 1);
-                }
-
-                for (int k = 0; k < 4; k++) {
-                    int nr = i + dr[k];
-                    int nc = j + dc[k];
-                    if (nr < 0 || nr >= N || nc < 0 || nc >= M) continue;
-                    if (arr[nr].charAt(nc) == '#') continue;
-                    out.addEdge(Node.of(nr * M + nc, 0), 1);
+        Node.init(R * C + 1, 2);
+        Node sink = Node.of(R * C, 0);
+        int[][] arr = new int[R][C];
+        for (int i = 0; i < R; i++) {
+            st = new StringTokenizer(br.readLine());
+            for (int j = 0; j < C; j++) {
+                arr[i][j] = parseInt(st.nextToken());
+                Node.of(i * C + j, 0).addEdge(Node.of(i * C + j, 1), arr[i][j]);
+            }
+            //바깥 테두리(탈출지점)를 sink와 연결
+            Node.of(i * C, 1).addEdge(sink, MAX_VALUE);
+            Node.of(i * C + C - 1, 1).addEdge(sink, MAX_VALUE);
+            if (i == 0 || i == R - 1) {
+                for (int j = 1; j < C - 1; j++) {
+                    Node.of(i * C + j, 1).addEdge(sink, MAX_VALUE);
                 }
             }
         }
 
-        for (Node.Edge edge : source.edges) {
-            if (edge.next.equals(sink)) {
-                System.out.println(-1);
-                return;
-            }
-        }
+        st = new StringTokenizer(br.readLine());
+        Node source = Node.of(parseInt(st.nextToken()) * C + parseInt(st.nextToken()), 1);
 
+        addEdges(R, C, arr, source);
+        System.out.print(getTotalFlow(R, C, sink, source));
+        br.close();
+    }
+
+    private static int getTotalFlow(int R, int C, Node sink, Node source) {
         int totalFlow = 0;
         while (true) {
             //경로 탐색
-            Node[][] prev = new Node[N * M][2];
-            Node.Edge[][] path = new Node.Edge[N * M][2];
+            Node[][] prev = new Node[R * C + 1][2];
+            Node.Edge[][] path = new Node.Edge[R * C + 1][2];
             Queue<Node> queue = new LinkedList<>();
             queue.add(source);
             while (!queue.isEmpty()) {
@@ -104,8 +89,34 @@ public class P2_학교가지마 {
             }
             totalFlow += flow;
         }
-        System.out.print(totalFlow);
-        br.close();
+        return totalFlow;
+    }
+
+    private static void addEdges(int R, int C, int[][] arr, Node source) {
+        int[] dr = new int[]{1, -1, 0, 0};
+        int[] dc = new int[]{0, 0, 1, -1};
+        Queue<Integer> queue = new LinkedList<>();
+        queue.add(source.id);
+        boolean[][] visited = new boolean[R][C];
+        visited[source.id / C][source.id % C] = true;
+        while (!queue.isEmpty()) {
+            int now = queue.poll();
+            int r = now / C;
+            int c = now % C;
+            Node out = Node.of(now, 1);
+
+            for (int k = 0; k < 4; k++) {
+                int nr = r + dr[k];
+                int nc = c + dc[k];
+                if (nr < 0 || nr >= R || nc < 0 || nc >= C) continue;
+                if (arr[nr][nc] == 0) continue;
+                int next = nr * C + nc;
+                out.addEdge(Node.of(next, 0), MAX_VALUE);
+                if (visited[nr][nc]) continue;
+                visited[nr][nc] = true;
+                queue.add(next);
+            }
+        }
     }
 
     static class Node {
