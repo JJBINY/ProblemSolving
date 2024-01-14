@@ -1,15 +1,17 @@
-package 백준.그래프.이분매칭;
+package 백준.그래프.최대유량.이분매칭;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
 
+import static java.lang.Integer.parseInt;
+
 /**
- * P3 룩 배치하기
- * https://www.acmicpc.net/problem/9525
+ * P3 N-Rook
+ * https://www.acmicpc.net/problem/1760
  */
-public class P3_룩배치하기 {
+public class P4_NRook {
 
     static boolean[] visited = new boolean[10001];
     static int[] assigned = new int[10001];
@@ -19,40 +21,43 @@ public class P3_룩배치하기 {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         //입력
-        int n = Integer.parseInt(br.readLine());
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int n = parseInt(st.nextToken());
+        int m = parseInt(st.nextToken());
 
-        String[] arr = new String[n];
-        int[][] rows = new int[n][n];
-        int idx = 0;
+        int[][] arr = new int[n][m];
+        int[][] rows = new int[n][m];
+        int idx =0;
         for (int i = 0; i < n; i++) {
-            arr[i] = br.readLine();
+            st = new StringTokenizer(br.readLine());
             idx++;
-            for (int j = 0; j < n; j++) {
-                if(arr[i].charAt(j) == 'X'){
+            for (int j = 0; j < m; j++) {
+                arr[i][j] = Integer.parseInt(st.nextToken());
+                if(arr[i][j] == 2){
                     idx++;
-                    continue;
+                }else{
+                    rows[i][j] = idx;
                 }
-                rows[i][j] = idx;
             }
         }
 
         idx = 0;
-        int[][] cols = new int[n][n];
-        for (int i = 0; i < n; i++) {
+        int[][] cols = new int[n][m];
+        for (int i = 0; i < m; i++) {
             idx++;
             for (int j = 0; j < n; j++) {
-                if(arr[j].charAt(i) == 'X'){
+                if(arr[j][i] == 2){
                     idx++;
-                    continue;
+                }else {
+                    cols[j][i] = idx;
                 }
-                cols[j][i] = idx;
             }
         }
 
         for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                if(rows[i][j] == 0) continue;
-                addEdge(cols[i][j], rows[i][j]);
+            for (int j = 0; j < m; j++) {
+                if(arr[i][j] == 1) continue;
+                addEdge(cols[i][j],rows[i][j]);
             }
         }
 

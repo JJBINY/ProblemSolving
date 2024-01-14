@@ -1,4 +1,4 @@
-package 백준.그래프.이분매칭;
+package 백준.그래프.최대유량.이분매칭;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,13 +8,13 @@ import java.util.*;
 import static java.lang.Integer.parseInt;
 
 /**
- * P3 N-Rook
- * https://www.acmicpc.net/problem/1760
+ * P3 룩 어택
+ * https://www.acmicpc.net/problem/1574
  */
-public class P4_NRook {
+public class P3_룩어택 {
 
-    static boolean[] visited = new boolean[10001];
-    static int[] assigned = new int[10001];
+    static boolean[] visited = new boolean[301];
+    static int[] assigned = new int[301];
     static Map<Integer, List<Integer>> edges = new HashMap<>();
 
     public static void main(String[] args) throws IOException {
@@ -22,49 +22,27 @@ public class P4_NRook {
 
         //입력
         StringTokenizer st = new StringTokenizer(br.readLine());
+        int r = parseInt(st.nextToken());
+        int c = parseInt(st.nextToken());
         int n = parseInt(st.nextToken());
-        int m = parseInt(st.nextToken());
 
-        int[][] arr = new int[n][m];
-        int[][] rows = new int[n][m];
-        int idx =0;
+        boolean[][] isBlank = new boolean[r + 1][c + 1];
         for (int i = 0; i < n; i++) {
             st = new StringTokenizer(br.readLine());
-            idx++;
-            for (int j = 0; j < m; j++) {
-                arr[i][j] = Integer.parseInt(st.nextToken());
-                if(arr[i][j] == 2){
-                    idx++;
-                }else{
-                    rows[i][j] = idx;
-                }
-            }
+            isBlank[parseInt(st.nextToken())][parseInt(st.nextToken())] = true;
         }
 
-        idx = 0;
-        int[][] cols = new int[n][m];
-        for (int i = 0; i < m; i++) {
-            idx++;
-            for (int j = 0; j < n; j++) {
-                if(arr[j][i] == 2){
-                    idx++;
-                }else {
-                    cols[j][i] = idx;
-                }
-            }
-        }
-
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                if(arr[i][j] == 1) continue;
-                addEdge(cols[i][j],rows[i][j]);
+        for (int i = 1; i <= r; i++) {
+            for (int j = 1; j <= c; j++) {
+                if(isBlank[i][j]) continue;
+                addEdge(i,j);
             }
         }
 
         //매칭
         int cnt = 0;
         Arrays.fill(assigned, -1);
-        for (int a = 1; a <= idx; a++) {
+        for (int a = 1; a <= r; a++) {
             Arrays.fill(visited, false);
             if (match(a)) cnt++;
         }

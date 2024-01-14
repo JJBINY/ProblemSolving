@@ -8,8 +8,7 @@ import static java.lang.Integer.parseInt;
 import static java.util.Objects.isNull;
 
 /**
- * P1 The King of the North
- * https://www.acmicpc.net/problem/9209
+ * P4 1014 컨닝
  */
 public class Main {
 

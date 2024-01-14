@@ -1,4 +1,4 @@
-package 백준.그래프.이분매칭;
+package 백준.그래프.최대유량.이분매칭;
 
 import java.io.BufferedReader;
 import java.io.IOException;

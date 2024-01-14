@@ -1,4 +1,4 @@
-package 백준.그래프.이분매칭;
+package 백준.그래프.최대유량.이분매칭;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,10 +9,10 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 /**
- * P4 열혈강호
- * https://www.acmicpc.net/problem/11375
+ * P4 축사배정
+ * https://www.acmicpc.net/problem/2188
  */
-public class P4_열혈강호 {
+public class P4_축사배정 {
 
     static boolean[] visited = new boolean[1001];
     static int[] assigned = new int[1001];
@@ -49,13 +49,13 @@ public class P4_열혈강호 {
         br.close();
     }
 
-    static boolean match(int a) {
+    static boolean match(int x) {
 
-        for (int b : edges.get(a)) {
+        for (int b : edges.get(x)) {
             if (visited[b]) continue;
             visited[b] = true;
             if (assigned[b] == -1 || match(assigned[b])) {
-                assigned[b] = a;
+                assigned[b] = x;
                 return true;
             }
         }
