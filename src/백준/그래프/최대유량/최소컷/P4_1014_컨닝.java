@@ -1,3 +1,5 @@
+package 백준.그래프.최대유량.최소컷;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -17,7 +19,7 @@ import static java.util.Objects.isNull;
  * 컨닝이 가능한 자리들을 연결한 뒤 minimum vertex cover를 제거
  * 이후 남은 정점(vertex)들이 앉을 수 있는 자리(파괴된 자리 제외)
  */
-public class Main {
+public class P4_1014_컨닝 {
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
