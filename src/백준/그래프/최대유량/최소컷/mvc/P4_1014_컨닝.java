@@ -1,4 +1,4 @@
-package 백준.그래프.최대유량.최소컷;
+package 백준.그래프.최대유량.최소컷.mvc;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -18,6 +18,9 @@ import static java.util.Objects.isNull;
  *
  * 컨닝이 가능한 자리들을 연결한 뒤 minimum vertex cover를 제거
  * 이후 남은 정점(vertex)들이 앉을 수 있는 자리(파괴된 자리 제외)
+ *
+ * 두 그룹으로 나눈 뒤 중복(충돌, 컨닝가능)되는 정점들을 간선으로 연결.
+ * 이후 연결된 간선들을 모두 제거하는 문제로 생각 가능 -> 최소컷 == 최대유량
  */
 public class P4_1014_컨닝 {
 

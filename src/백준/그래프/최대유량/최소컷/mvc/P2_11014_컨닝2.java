@@ -1,3 +1,5 @@
+package 백준.그래프.최대유량.최소컷.mvc;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -7,13 +9,14 @@ import static java.lang.Integer.parseInt;
 import static java.util.Objects.isNull;
 
 /**
- * P1 5398 WrongAnswer
- * 최소컷, minimum vertex cover, 최대유량, 이분매칭
+ * P2 11014 컨닝2
+ * (전체 자리) - ((부서진 자리) + (매칭수))
+ * 이분매칭
  */
-public class Main {
+public class P2_11014_컨닝2 {
 
-    static boolean[] visited;
-    static Node[] assigned;
+    static boolean[][] visited;
+    static Node[][] assigned;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -23,46 +26,57 @@ public class Main {
         while (T-- > 0) {
             //입력
             StringTokenizer st = new StringTokenizer(br.readLine());
-            int H = parseInt(st.nextToken()); //가로
-            int V = parseInt(st.nextToken()); //세로
+            int N = parseInt(st.nextToken()); //행
+            int M = parseInt(st.nextToken()); //열
 
-            //가로단어
-            char[][] words = new char[2000][2000];
-            int[][] horizon = new int[2000][2000];
-            for (int i = 0; i < H; i++) {
-                st = new StringTokenizer(br.readLine());
-                int x = parseInt(st.nextToken());
-                int y = parseInt(st.nextToken());
-                String word = st.nextToken();
-                for (int j = 0; j < word.length(); j++) {
-                    words[y][x + j] = word.charAt(j);
-                    horizon[y][x + j] = i;
-                }
+            String[] arr = new String[N];
+            for (int i = 0; i < N; i++) {
+                arr[i] = br.readLine();
             }
 
-            //세로단어
-            Node.init(Math.max(H, V), 2);
-            for (int i = 0; i < V; i++) {
-                st = new StringTokenizer(br.readLine());
-                int x = parseInt(st.nextToken());
-                int y = parseInt(st.nextToken());
-                String word = st.nextToken();
-                for (int j = 0; j < word.length(); j++) {
-                    //충돌시 간선연결
-                    if (words[y + j][x] != 0 && words[y + j][x] != word.charAt(j)) {
-                        Node.of(horizon[y + j][x], 0).addEdge(Node.of(i, 1), 1);
+            //간선연결
+            Node.init(N + 1, M + 1);
+
+            int[] dr = new int[]{-1, -1, 0, 0, 1, 1};
+            int[] dc = new int[]{-1, 1, -1, 1, -1, 1};
+            Node source = Node.of(N, 0);
+            Node sink = Node.of(N, 1);
+            int x = 0;
+            for (int i = 0; i < N; i++) {
+                for (int j = 0; j < M; j++) {
+                    if (arr[i].charAt(j) == 'x') {
+                        x++;
+                        continue;
+                    }
+
+                    Node now = Node.of(i, j);
+                    if (j % 2 > 0) {
+                        now.addEdge(sink, 1);
+                    } else {
+                        source.addEdge(now, 1);
+                        for (int k = 0; k < 6; k++) {
+                            int nr = i + dr[k];
+                            int nc = j + dc[k];
+                            if (nr < 0 || nr >= N || nc < 0 || nc >= M) continue;
+                            if (arr[nr].charAt(nc) == 'x') continue;
+                            now.addEdge(Node.of(nr, nc), 1);
+                        }
                     }
                 }
             }
 
-            assigned = new Node[V];
-            visited = new boolean[V];
+            assigned = new Node[N + 1][M + 1];
+            visited = new boolean[N + 1][M + 1];
             int matched = 0;
-            for (int i = 0; i < H; i++) {
-                Arrays.fill(visited, false);
-                if (match(Node.of(i, 0))) matched++;
+            for (Node.Edge edge : source.edges) {
+                Node a = edge.next;
+                for (boolean[] v : visited) {
+                    Arrays.fill(v, false);
+                }
+                if (match(a)) matched++;
             }
-            sb.append(H + V - matched).append("\n");
+
+            sb.append(N * M - x - matched).append("\n");
         }
         System.out.print(sb);
         br.close();
@@ -71,10 +85,10 @@ public class Main {
     public static boolean match(Node a) {
         for (Node.Edge edge : a.edges) {
             Node b = edge.next;
-            if (visited[b.id]) continue;
-            visited[b.id] = true;
-            if (Objects.isNull(assigned[b.id]) || match(assigned[b.id])) {
-                assigned[b.id] = a;
+            if (visited[b.id][b.time]) continue;
+            visited[b.id][b.time] = true;
+            if (Objects.isNull(assigned[b.id][b.time]) || match(assigned[b.id][b.time])) {
+                assigned[b.id][b.time] = a;
                 return true;
             }
         }

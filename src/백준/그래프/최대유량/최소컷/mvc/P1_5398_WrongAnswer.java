@@ -1,3 +1,5 @@
+package 백준.그래프.최대유량.최소컷.mvc;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -10,7 +12,7 @@ import static java.util.Objects.isNull;
  * P1 5398 WrongAnswer
  * 최소컷, minimum vertex cover, 최대유량, 이분매칭
  */
-public class Main {
+public class P1_5398_WrongAnswer {
 
     static boolean[] visited;
     static Node[] assigned;

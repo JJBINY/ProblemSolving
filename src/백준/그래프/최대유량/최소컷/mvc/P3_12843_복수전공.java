@@ -1,3 +1,5 @@
+package 백준.그래프.최대유량.최소컷.mvc;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -7,10 +9,11 @@ import static java.lang.Integer.parseInt;
 import static java.util.Objects.isNull;
 
 /**
- * P1 5398 WrongAnswer
- * 최소컷, minimum vertex cover, 최대유량, 이분매칭
+ * P3 12843 복수전공
+ * 중복제거 = s와c사이 간선x인 정점의 집합 =  minimum vertex cover제거
+ * 이분매칭
  */
-public class Main {
+public class P3_12843_복수전공 {
 
     static boolean[] visited;
     static Node[] assigned;
@@ -19,52 +22,45 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringBuilder sb = new StringBuilder();
 
-        int T = parseInt(br.readLine());
-        while (T-- > 0) {
-            //입력
-            StringTokenizer st = new StringTokenizer(br.readLine());
-            int H = parseInt(st.nextToken()); //가로
-            int V = parseInt(st.nextToken()); //세로
+        //입력
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int N = parseInt(st.nextToken());
+        int M = parseInt(st.nextToken());
 
-            //가로단어
-            char[][] words = new char[2000][2000];
-            int[][] horizon = new int[2000][2000];
-            for (int i = 0; i < H; i++) {
-                st = new StringTokenizer(br.readLine());
-                int x = parseInt(st.nextToken());
-                int y = parseInt(st.nextToken());
-                String word = st.nextToken();
-                for (int j = 0; j < word.length(); j++) {
-                    words[y][x + j] = word.charAt(j);
-                    horizon[y][x + j] = i;
-                }
+        boolean[] isCMajor = new boolean[N + 1];
+        for (int i = 0; i < N; i++) {
+            st = new StringTokenizer(br.readLine());
+            int id = parseInt(st.nextToken());
+            if (st.nextToken().equals("c")) {
+                isCMajor[id] = true;
             }
-
-            //세로단어
-            Node.init(Math.max(H, V), 2);
-            for (int i = 0; i < V; i++) {
-                st = new StringTokenizer(br.readLine());
-                int x = parseInt(st.nextToken());
-                int y = parseInt(st.nextToken());
-                String word = st.nextToken();
-                for (int j = 0; j < word.length(); j++) {
-                    //충돌시 간선연결
-                    if (words[y + j][x] != 0 && words[y + j][x] != word.charAt(j)) {
-                        Node.of(horizon[y + j][x], 0).addEdge(Node.of(i, 1), 1);
-                    }
-                }
-            }
-
-            assigned = new Node[V];
-            visited = new boolean[V];
-            int matched = 0;
-            for (int i = 0; i < H; i++) {
-                Arrays.fill(visited, false);
-                if (match(Node.of(i, 0))) matched++;
-            }
-            sb.append(H + V - matched).append("\n");
         }
-        System.out.print(sb);
+
+        //간선연결
+        Node.init(N + 1, 1);
+        for (int i = 0; i < M; i++) {
+            st = new StringTokenizer(br.readLine());
+            int a = parseInt(st.nextToken());
+            int b = parseInt(st.nextToken());
+
+            if (isCMajor[a]) {
+                int tmp = a;
+                a = b;
+                b = tmp;
+            }
+            Node.of(a, 0).addEdge(Node.of(b, 0), 1);
+        }
+
+        assigned = new Node[N + 1];
+        visited = new boolean[N + 1];
+        int matched = 0;
+        for (int i = 1; i <= N; i++) {
+            if (isCMajor[i]) continue;
+            Arrays.fill(visited, false);
+            if (match(Node.of(i, 0))) matched++;
+        }
+
+        System.out.print(N - matched);
         br.close();
     }
 
