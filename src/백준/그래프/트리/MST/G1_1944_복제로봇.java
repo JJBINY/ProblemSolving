@@ -1,3 +1,5 @@
+package 백준.그래프.트리.MST;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -13,7 +15,7 @@ import static java.util.Comparator.comparingInt;
  * G1 1944 복제로봇
  * MST, Graph, BFS
  */
-public class Main {
+public class G1_1944_복제로봇 {
 
     static int[] parent;
     static char[][] maze;

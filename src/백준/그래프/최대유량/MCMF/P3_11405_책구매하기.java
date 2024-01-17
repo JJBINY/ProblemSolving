@@ -1,3 +1,5 @@
+package 백준.그래프.최대유량.MCMF;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -11,7 +13,7 @@ import static java.util.Objects.isNull;
  * P3 11405 책 구매하기
  * MinimumCostMaximumFlow, 최대유량
  */
-public class Main {
+public class P3_11405_책구매하기 {
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
