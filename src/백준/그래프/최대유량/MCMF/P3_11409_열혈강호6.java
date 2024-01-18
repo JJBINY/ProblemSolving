@@ -1,17 +1,20 @@
+package 백준.그래프.최대유량.MCMF;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
+import java.util.stream.IntStream;
 
 import static java.lang.Integer.MAX_VALUE;
 import static java.lang.Integer.parseInt;
 import static java.util.Objects.isNull;
 
 /**
- * P3 11407 책 구매하기3
+ * P3 11409 열혈강호6
  * MCMF, 최대유량
  */
-public class Main {
+public class P3_11409_열혈강호6 {
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -24,35 +27,24 @@ public class Main {
         Node.init(MAX_LEN + 1, 2);
 
 
-        Node sink = new Node(0, 0);
-        st = new StringTokenizer(br.readLine());
         for (int i = 1; i <= N; i++) {
-            int capacity = parseInt(st.nextToken());
-            Node.of(i, 0).addEdge(sink, capacity, 0);
+            st = new StringTokenizer(br.readLine());
+            int jobN = parseInt(st.nextToken());
+            for (int j = 0; j < jobN; j++) {
+                int jobId = parseInt(st.nextToken());
+                int cost = parseInt(st.nextToken());
+                Node.of(i, 0).addEdge(Node.of(jobId, 1), 1, -cost);
+            }
         }
 
         Node source = new Node(0, 1);
-        st = new StringTokenizer(br.readLine());
-        for (int i = 1; i <= M; i++) {
-            int capacity = parseInt(st.nextToken());
-            source.addEdge(Node.of(i, 1), capacity, 0);
-        }
+        Node sink = new Node(0, 0);
+        IntStream.rangeClosed(1, N)
+                .forEach(i -> source.addEdge(Node.of(i, 0), 1, 0));
+        IntStream.rangeClosed(1, M)
+                .forEach(i -> Node.of(i, 1).addEdge(sink, 1, 0));
 
-        String[] inputs = new String[M+1];
-        for (int i = 1; i <= M; i++) {
-            inputs[i] = br.readLine();
-        }
 
-        for (int i = 1; i <= M; i++) {
-            st = new StringTokenizer(inputs[i]);
-            StringTokenizer st2 = new StringTokenizer(br.readLine());
-            Node bookStore = Node.of(i, 1);
-            for (int j = 1; j <= N; j++) {
-                int capacity = parseInt(st.nextToken());
-                int cost = parseInt(st2.nextToken());
-                bookStore.addEdge(Node.of(j, 0), capacity, cost);
-            }
-        }
         int totalFlow = 0;
         int minCost = 0;
         while (true) {
@@ -103,7 +95,7 @@ public class Main {
             totalFlow += flow;
         }
         System.out.println(totalFlow);
-        System.out.println(minCost);
+        System.out.println(-minCost);
 
         br.close();
     }
