@@ -1,3 +1,5 @@
+package 백준.그래프.최대유량.MCMF;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -8,45 +10,35 @@ import static java.lang.Integer.parseInt;
 import static java.util.Objects.isNull;
 
 /**
- * P2 9413 제주도 관광
+ * P2 2311 왕복 여행
  * MCMF, 최대유량
  */
-public class Main {
+public class P2_2311_왕복여행 {
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        StringBuilder sb = new StringBuilder();
-
         //입력
-        int N = parseInt(br.readLine());
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int N = parseInt(st.nextToken());
+        int M = parseInt(st.nextToken());
         int MAX_LEN = N;
+        Node.init(MAX_LEN + 1, 1);
 
-        int[] inTimes = Arrays.stream(br.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
-        int[] outTimes = Arrays.stream(br.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
-        int T = parseInt(br.readLine()); //과속기준시간
-        int F = parseInt(br.readLine()); //벌금최댓값
+        for (int i = 0; i < M; i++) {
+            st = new StringTokenizer(br.readLine());
+            int a = parseInt(st.nextToken());
+            int b = parseInt(st.nextToken());
+            int c = parseInt(st.nextToken());
+            Node.of(a, 0).addEdge(Node.of(b, 0), 1, c);
+            Node.of(b, 0).addEdge(Node.of(a, 0), 1, c);
+        }
 
-        //간선연결
-        Node.init(MAX_LEN + 1, 2);
-        Node source = Node.of(N, 1);
+        Node source = Node.of(1, 0);
         Node sink = Node.of(N, 0);
-        for (int i = 0; i < N; i++) {
-            source.addEdge(Node.of(i, 0), 1, 0);
-            Node.of(i, 1).addEdge(sink, 1, 0);
-        }
-
-
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < N; j++) {
-                int fine = -Math.min(F, getFine(T, outTimes[j] - inTimes[i]));
-                System.out.println("fine = " + fine);
-                Node.of(i, 0).addEdge(Node.of(j, 1), 1, fine);
-            }
-        }
 
         int minCost = 0;
-        while(true){
+        for (int ship = 0; ship < 2; ship++) {
             boolean[][] isInQ = new boolean[MAX_LEN + 1][2];
             int[][] dist = new int[MAX_LEN + 1][2];
             Node[][] prev = new Node[MAX_LEN + 1][2];
@@ -91,19 +83,11 @@ public class Main {
                 p.flow += flow;
                 p.reversed.flow -= flow;
             }
-            System.out.println("flow = " + flow);
         }
-        sb.append(-minCost).append("\n");
 
-        System.out.print(sb.toString());
+        System.out.println(minCost);
 
         br.close();
-    }
-
-    private static int getFine(int T, int diff) {
-        if(diff>=T) return (int)Math.pow(T - diff,2);
-        return 0;
-//        return (int)Math.pow(T - diff,2);
     }
 
     static class Node {
