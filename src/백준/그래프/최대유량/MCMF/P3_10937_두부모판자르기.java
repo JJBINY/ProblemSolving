@@ -1,3 +1,5 @@
+package 백준.그래프.최대유량.MCMF;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -11,7 +13,7 @@ import static java.util.Objects.isNull;
  * P3 10937 두부 모판 자르기
  * MCMF, 최대유량
  */
-public class Main {
+public class P3_10937_두부모판자르기 {
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));

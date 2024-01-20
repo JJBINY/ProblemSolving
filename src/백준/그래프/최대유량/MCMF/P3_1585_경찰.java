@@ -1,3 +1,5 @@
+package 백준.그래프.최대유량.MCMF;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -8,65 +10,52 @@ import static java.lang.Integer.parseInt;
 import static java.util.Objects.isNull;
 
 /**
- * P3 10937 두부 모판 자르기
+ * P3 1585 경찰
  * MCMF, 최대유량
  */
-public class Main {
+public class P3_1585_경찰 {
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         //입력
         int N = parseInt(br.readLine());
-        int MAX_LEN = N * N;
+        int MAX_LEN = N;
 
-        int[][] costs = new int[][]{
-                {100, 70, 40, 0},
-                {70, 50, 30, 0},
-                {40, 30, 20, 0},
-                {0, 0, 0, 0}};
-        Map<Character, Integer> map = new HashMap<>();
-        map.put('A', 0);
-        map.put('B', 1);
-        map.put('C', 2);
-        map.put('F', 3);
+        int[] inTimes = Arrays.stream(br.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
+        int[] outTimes = Arrays.stream(br.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
+        int T = parseInt(br.readLine()); //과속기준시간
+        int F = parseInt(br.readLine()); //벌금최댓값
+        br.close();
 
-        int[][] arr = new int[N][N];
-        for (int i = 0; i < N; i++) {
-            String line = br.readLine();
-            for (int j = 0; j < N; j++) {
-                arr[i][j] = map.get(line.charAt(j));
-            }
+        int minCost = getMinCost(N, MAX_LEN, inTimes, outTimes, T, F, 1);
+        System.out.print(minCost);
+        if (minCost < 0) {
+            return;
         }
+        int maxCost = -getMinCost(N, MAX_LEN, inTimes, outTimes, T, F, -1);
+        System.out.println(" " + maxCost);
 
+    }
+
+    private static int getMinCost(int N, int MAX_LEN, int[] inTimes, int[] outTimes, int T, int F, int flag) {
         //간선연결
         Node.init(MAX_LEN + 1, 2);
-        Node source = Node.of(MAX_LEN, 1);
-        Node sink = Node.of(MAX_LEN, 0);
-
-        int[] dr = new int[]{1, -1, 0, 0};
-        int[] dc = new int[]{0, 0, 1, -1};
+        Node source = Node.of(N, 1);
+        Node sink = Node.of(N, 0);
         for (int i = 0; i < N; i++) {
-            for (int j = 0; j < N; j++) {
-                int now = i * N + j;
-                Node.of(now, 0).addEdge(Node.of(now, 1), 1, 0);
-                if ((i + j) % 2 != 0) {
-                    Node.of(now, 1).addEdge(sink, 1, 0);
-                } else {
-                    source.addEdge(Node.of(now, 0), 1, 0);
-                    for (int k = 0; k < 4; k++) {
-                        int nr = i + dr[k];
-                        int nc = j + dc[k];
-                        if (nr < 0 || nr >= N || nc < 0 || nc >= N) continue;
-                        int adj = nr * N + nc;
-                        Node.of(now, 1).addEdge(Node.of(adj, 0),
-                                1, -costs[arr[i][j]][arr[nr][nc]]);
-                    }
-                }
-            }
+            source.addEdge(Node.of(i, 0), 1, 0);
+            Node.of(i, 1).addEdge(sink, 1, 0);
         }
 
-        int ans = 0;
+
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                if (inTimes[i] >= outTimes[j]) continue;
+                int fine = flag * getFine(F, T, outTimes[j] - inTimes[i]);
+                Node.of(i, 0).addEdge(Node.of(j, 1), 1, fine);
+            }
+        }
 
         int minCost = 0;
         int maxFlow = 0;
@@ -116,14 +105,17 @@ public class Main {
                 p.reversed.flow -= flow;
             }
             maxFlow += flow;
-            ans = Math.max(ans, -minCost);
         }
-        System.out.println(ans);
-
-        br.close();
-
+        if (maxFlow < N) {
+            minCost = -1;
+        }
+        return minCost;
     }
 
+    private static int getFine(int F, int T, int diff) {
+        if (diff < T) return Math.min(F, (int) Math.pow(T - diff, 2));
+        return 0;
+    }
 
     static class Node {
         private static Node[][] nodes;
