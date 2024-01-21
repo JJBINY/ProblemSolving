@@ -1,3 +1,5 @@
+package 백준.그래프.최대유량.MCMF;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -11,7 +13,7 @@ import static java.util.Objects.isNull;
  * P1 11493 동전 교환
  * MCMF, 최대유량
  */
-public class Main {
+public class P1_11493_동전교환 {
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
