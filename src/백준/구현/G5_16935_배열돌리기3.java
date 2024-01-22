@@ -1,3 +1,5 @@
+package 백준.구현;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -10,7 +12,7 @@ import static java.lang.Integer.parseInt;
  * G5 16935 배열돌리기3
  * n^3
  */
-public class Main {
+public class G5_16935_배열돌리기3 {
 
     /*
     1번 상하반전
