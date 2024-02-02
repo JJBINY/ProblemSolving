@@ -11,7 +11,7 @@ import java.util.StringTokenizer;
  * G2 2048
  * https://www.acmicpc.net/problem/12100
  */
-public class G2_2048 {
+public class G2_12100_2048 {
 
     static int max = 0;
     static int[] dv = new int[]{-1, 1, -1, 1};//이동방향 = 상하좌우 : 0123
