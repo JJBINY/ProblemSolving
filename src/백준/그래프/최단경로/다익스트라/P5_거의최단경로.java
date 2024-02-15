@@ -1,4 +1,4 @@
-package 백준.그래프.다익스트라;
+package 백준.그래프.최단경로.다익스트라;
 
 import java.io.BufferedReader;
 import java.io.IOException;
