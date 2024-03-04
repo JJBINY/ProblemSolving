@@ -1,7 +1,10 @@
+package 백준.DP.그냥DP;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.*;
+import java.util.Arrays;
+import java.util.StringTokenizer;
 
 import static java.lang.Integer.parseInt;
 
@@ -10,7 +13,7 @@ import static java.lang.Integer.parseInt;
  * G2 3114 사과와 바나나
  * DP, 누적합
  */
-public class Main {
+public class G2_3114_사과와바나나 {
     public static void main(String[] args) {
         try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in))) {
             solve(br);
