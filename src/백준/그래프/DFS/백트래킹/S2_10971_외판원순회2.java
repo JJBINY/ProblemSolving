@@ -1,4 +1,4 @@
-package 백준.백트래킹;
+package 백준.그래프.DFS.백트래킹;
 
 import java.io.BufferedReader;
 import java.io.IOException;
