@@ -1,4 +1,4 @@
-package 프로그래머스.스택and큐;
+package 프로그래머스.자료구조.큐;
 
 import java.util.*;
 

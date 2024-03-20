@@ -1,4 +1,4 @@
-package 프로그래머스.완전탐색;
+package 프로그래머스.완전탐색.백트래킹;
 
 import java.util.*;
 

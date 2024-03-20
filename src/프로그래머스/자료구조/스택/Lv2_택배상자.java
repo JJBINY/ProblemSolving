@@ -1,7 +1,5 @@
-package 프로그래머스.스택and큐;
+package 프로그래머스.자료구조.스택;
 
-import java.util.LinkedList;
-import java.util.Queue;
 import java.util.Stack;
 
 public class Lv2_택배상자 {
