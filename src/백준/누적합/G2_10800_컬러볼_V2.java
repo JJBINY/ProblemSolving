@@ -21,8 +21,6 @@ public class G2_10800_컬러볼_V2 {
         }
     }
 
-    static Ball[] balls;
-
     static void solve(BufferedReader br) throws IOException {
         int N = Integer.parseInt(br.readLine());
 
