@@ -1,4 +1,4 @@
-package 백준.이분탐색;
+package 백준.이분탐색.파라메트릭서치;
 
 import java.io.BufferedReader;
 import java.io.IOException;
