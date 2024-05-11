@@ -3,7 +3,7 @@ package 프로그래머스.데브매칭2021;
 import java.util.ArrayList;
 import java.util.List;
 
-class Solution {
+public class 나_행렬테두리회전 {
     public int[] solution(int rows, int columns, int[][] queries) {
 
         int[][] arr = new int[rows+1][columns+1];

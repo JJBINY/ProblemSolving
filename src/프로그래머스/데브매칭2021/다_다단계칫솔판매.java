@@ -1,7 +1,8 @@
+package 프로그래머스.데브매칭2021;
 import java.util.HashMap;
 import java.util.Map;
 
-class Solution {
+public class 다_다단계칫솔판매 {
     public int[] solution(String[] enroll, String[] referral, String[] seller, int[] amount) {
 
         Map<String, Node> map = new HashMap<>();
