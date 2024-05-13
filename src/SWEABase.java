@@ -20,7 +20,7 @@ public class SWEABase {
                 ans.append(solve(br));
                 ans.append("\n");
             }
-            System.out.println(ans);
+            System.out.print(ans);
         } catch (IOException e) {
             e.printStackTrace();
         }
