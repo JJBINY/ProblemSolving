@@ -1,4 +1,4 @@
-package SWEA.조합;
+package SWEA.순열조합;
 
 import static java.lang.Integer.parseInt;
 
