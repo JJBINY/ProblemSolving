@@ -1,4 +1,4 @@
-package 백준.구현;
+package 백준.재귀;
 
 import java.io.BufferedReader;
 import java.io.IOException;
