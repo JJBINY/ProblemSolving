@@ -1,4 +1,4 @@
-package 백준.자료구조.set_map;
+package 백준.자료구조.hash;
 
 import java.io.BufferedReader;
 import java.io.IOException;
