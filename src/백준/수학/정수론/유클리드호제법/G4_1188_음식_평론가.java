@@ -1,4 +1,4 @@
-package 백준.수학.정수론;
+package 백준.수학.정수론.유클리드호제법;
 
 import java.io.BufferedReader;
 import java.io.IOException;
