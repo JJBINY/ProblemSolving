@@ -11,6 +11,11 @@ import static java.lang.Integer.parseInt;
  *
  */
 public class BOJBase {
+
+    static Object solve(BufferedReader br) throws IOException {
+        return null;
+    }
+
     public static void main(String[] args) {
         try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in))) {
             StringBuilder ans = new StringBuilder();
@@ -24,9 +29,5 @@ public class BOJBase {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    static Object solve(BufferedReader br) throws IOException {
-        return null;
     }
 }
